@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Poolside AZ brings the all-inclusive resort to your backyard: a food and drink menu, servers at the water's edge, and a pool party that runs like a resort.">
+<meta property="og:title" content="Poolside AZ">
+<meta property="og:description" content="Poolside AZ brings the all-inclusive resort to your backyard: a food and drink menu, servers at the water's edge, and a pool party that runs like a resort.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://poolsideaz.com/">
+<link rel="canonical" href="https://poolsideaz.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Crect%20width%3D%2240%22%20height%3D%2240%22%20rx%3D%229%22%20fill%3D%22%230A7FA3%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2211%22%20fill%3D%22none%22%20stroke%3D%22%23FF6F8B%22%20stroke-width%3D%228%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2211%22%20fill%3D%22none%22%20stroke%3D%22%23FFFDF6%22%20stroke-width%3D%228%22%20stroke-dasharray%3D%228.64%208.64%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Poolside AZ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Jost:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Mr+Dafoe&display=swap">
+<style>
+/* Layout: the page is a backyard seen from above. It opens in the pool (live water you can touch),
+   crosses the coping, and continues along the deck, where every block of content is a resort object:
+   a pool-rules sign, a menu card under an awning, wristbands, a postcard.
+   One committed sunny look (no theme switch); every colour is set explicitly. */
+:root {
+  --pool: #1BB8CC;
+  --pool-deep: #0A6E86;
+  --lagoon: #0B2C3A;        /* ink */
+  --flamingo: #FF6F8B;
+  --flamingo-ink: #C42A50;  /* flamingo dark enough for text on sand */
+  --sun: #FFC83D;
+  --palm: #66CF97;
+  --sand: #FFF4DC;          /* the deck */
+  --paper: #FFFDF6;
+  --sign-blue: #14507E;
+
+  --display: "Caprasimo", "Cooper Black", "Rockwell Extra Bold", Georgia, serif;
+  --body: "Jost", "Futura", "Century Gothic", "Trebuchet MS", sans-serif;
+  --script: "Mr Dafoe", "Brush Script MT", "Snell Roundhand", cursive;
+
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --section: clamp(4rem, 9vw, 7rem);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--sand); color: var(--lagoon); font-family: var(--body); font-size: 1.125rem; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+img, svg, canvas { max-width: 100%; }
+h1, h2, h3, p, ul, ol, figure, fieldset, legend { margin: 0; padding: 0; border: 0; }
+ul, ol { list-style: none; }
+h1, h2, h3 { text-wrap: balance; font-weight: 400; }
+a { color: inherit; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--lagoon); outline-offset: 3px; border-radius: 6px; }
+.on-water :focus-visible { outline-color: var(--sun); }
+
+.wrap { max-width: 72rem; margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--section); }
+.h2 { font-family: var(--display); font-size: clamp(2rem, 4.6vw, 3.5rem); line-height: 1.03; letter-spacing: -0.01em; }
+.lede { font-size: 1.1875rem; max-width: 34rem; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; font: 700 1.0625rem/1 var(--body); text-decoration: none; cursor: pointer; padding: 1.05rem 1.6rem; border-radius: 999px; border: 3px solid var(--lagoon); background: var(--sun); color: var(--lagoon); box-shadow: 5px 5px 0 var(--lagoon); transition: transform .12s ease, box-shadow .12s ease; }
+.btn:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--lagoon); }
+.btn:active { transform: translate(5px, 5px); box-shadow: 0 0 0 var(--lagoon); }
+.btn.pink { background: var(--flamingo); }
+.btn.plain { background: var(--paper); }
+.btn.small { padding: 0.7rem 1.1rem; font-size: 0.9375rem; box-shadow: 3px 3px 0 var(--lagoon); }
+
+/* ---------- the pool ---------- */
+.pool { position: relative; color: var(--paper); background: linear-gradient(115deg, #086B94, #12A6C4 70%, #1BB8CC); overflow: hidden; isolation: isolate; }
+.pool canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.1rem; flex-wrap: wrap; }
+.brand { display: inline-flex; align-items: baseline; gap: 0.5rem; text-decoration: none; font-family: var(--script); font-size: 2.25rem; line-height: 1; color: var(--paper); text-shadow: 0 2px 0 rgba(4, 52, 70, .45); }
+.brand b { font: 800 0.875rem/1 var(--body); letter-spacing: 0.06em; background: var(--sun); color: var(--lagoon); padding: 0.3rem 0.45rem; border-radius: 0.35rem; text-shadow: none; transform: translateY(-0.35rem) rotate(6deg); }
+.nav { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2rem); }
+.nav a.link { text-decoration: none; font-weight: 600; font-size: 1rem; color: var(--paper); text-shadow: 0 1px 6px rgba(4, 52, 70, .6); }
+.nav a.link:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+@media (max-width: 48rem) { .nav a.link { display: none; } }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 1.5rem; align-items: center; padding-block: clamp(2rem, 6vw, 4.5rem) clamp(3.5rem, 8vw, 6rem); }
+.hero-copy { display: grid; gap: 1.5rem; min-width: 0; justify-items: start; }
+.hero h1 { font-family: var(--display); font-size: clamp(2.75rem, 6.6vw, 5.75rem); line-height: 0.98; letter-spacing: -0.015em; text-shadow: 0 0.06em 0 rgba(4, 52, 70, .55), 0 0.3em 0.9em rgba(4, 52, 70, .45); }
+.hero .lede { font-size: clamp(1.125rem, 1.6vw, 1.3125rem); font-weight: 500; text-shadow: 0 1px 10px rgba(4, 52, 70, .75), 0 0 2px rgba(4, 52, 70, .5); }
+.hint { font-size: 0.9375rem; font-weight: 500; font-style: italic; opacity: .9; text-shadow: 0 1px 8px rgba(4, 52, 70, .7); }
+
+.floats { position: relative; min-height: 26rem; pointer-events: none; }
+.float { position: absolute; filter: drop-shadow(1.1rem 1.7rem 0.55rem rgba(3, 52, 70, .36)); animation: bob 12s ease-in-out infinite alternate; }
+.float i { display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; position: relative; }
+.ring { width: min(15rem, 46%); right: 8%; top: 4%; }
+.ring i { background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .6), transparent 22%),
+    radial-gradient(circle, transparent 36%, rgba(120, 20, 50, .28) 40%, transparent 50%, transparent 60%, rgba(120, 20, 50, .22) 71%),
+    repeating-conic-gradient(from 8deg, #FF6F8B 0 30deg, #FFFDF6 30deg 60deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 37.5%, #000 38.5%); mask: radial-gradient(circle, transparent 0 37.5%, #000 38.5%); }
+.ball { width: min(7.5rem, 24%); left: 6%; top: 46%; animation-duration: 9s; animation-delay: -4s; }
+.ball i { background:
+    radial-gradient(circle, #FFFDF6 0 7%, transparent 8%),
+    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, .75), transparent 28%),
+    conic-gradient(from 20deg, #FFC83D 0 60deg, #FFFDF6 60deg 120deg, #FF6F8B 120deg 180deg, #FFFDF6 180deg 240deg, #2E7FD6 240deg 300deg, #FFFDF6 300deg);
+  box-shadow: inset -0.7rem -0.9rem 1.3rem rgba(20, 40, 80, .28); }
+.tray { width: min(10.5rem, 34%); right: 22%; bottom: 0; animation-duration: 14s; animation-delay: -7s; }
+.tray i { background: radial-gradient(circle, #EBC892 0 60%, #CF9F60 61% 70%, #AD7E45 71%); }
+.tray u { position: absolute; border-radius: 50%; border: 0.28rem solid rgba(255, 255, 255, .92); box-shadow: 0.15rem 0.25rem 0.2rem rgba(80, 50, 20, .35); }
+.tray u:nth-child(1) { width: 30%; aspect-ratio: 1; left: 22%; top: 20%; background: radial-gradient(circle at 60% 40%, #FF9AB0, #F0547A); }
+.tray u:nth-child(2) { width: 30%; aspect-ratio: 1; right: 18%; top: 30%; background: radial-gradient(circle at 60% 40%, #FFF3C4, #FFD766); }
+.tray u:nth-child(3) { width: 26%; aspect-ratio: 1; left: 36%; bottom: 14%; background: radial-gradient(circle at 60% 40%, #C8F5D6, #6FD79B); }
+.tray s { position: absolute; width: 20%; aspect-ratio: 1; right: 14%; top: 20%; border-radius: 50%; background: repeating-conic-gradient(#FF6F8B 0 45deg, #FFFDF6 45deg 90deg); box-shadow: 0.12rem 0.2rem 0.2rem rgba(80, 50, 20, .4); }
+@keyframes bob { from { transform: translate(0, 0) rotate(-5deg); } 50% { transform: translate(0.7rem, -0.5rem) rotate(2deg); } to { transform: translate(-0.4rem, 0.6rem) rotate(7deg); } }
+@media (max-width: 56rem) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .floats { min-height: 15rem; }
+  .ring { width: 10.5rem; right: 2%; top: 0; }
+  .ball { width: 5.25rem; left: 4%; top: 22%; }
+  .tray { width: 7.5rem; right: 40%; bottom: 0; }
+}
+
+/* the coping: pool edge with depth-marker tiles */
+.coping { position: relative; background:
+    radial-gradient(circle at 12% 30%, rgba(11, 44, 58, .12) 0 2px, transparent 3px) 0 0 / 5.5rem 4rem,
+    radial-gradient(circle at 60% 70%, rgba(196, 42, 80, .16) 0 2px, transparent 3px) 0 0 / 4.5rem 3.5rem,
+    radial-gradient(circle at 85% 20%, rgba(10, 110, 134, .18) 0 2px, transparent 3px) 0 0 / 6.5rem 4.5rem,
+    #F1E4C6;
+  border-top: 0.5rem solid #DCCBA3; box-shadow: 0 -0.6rem 1.2rem rgba(3, 52, 70, .35), inset 0 -0.4rem 0 rgba(11, 44, 58, .08); }
+.coping ul { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding-block: 1rem; overflow: hidden; }
+.marker { flex: none; font: 800 1rem/1 var(--body); letter-spacing: 0.04em; text-transform: uppercase; color: var(--sign-blue); background: var(--paper); border: 3px solid var(--sign-blue); border-radius: 0.3rem; padding: 0.65rem 0.85rem; box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px rgba(20, 80, 126, .35), 0 2px 0 rgba(11, 44, 58, .18); white-space: nowrap; }
+@media (max-width: 62rem) { .coping li:nth-child(4) { display: none; } }
+@media (max-width: 46rem) { .coping li:nth-child(5) { display: none; } .marker { font-size: 0.8125rem; padding: 0.55rem 0.6rem; } }
+@media (max-width: 26rem) { .coping li:nth-child(1) { display: none; } .coping ul { justify-content: space-around; } }
+
+/* ---------- the deck: intro + rules sign ---------- */
+.deck { background:
+    radial-gradient(circle at 20% 25%, rgba(255, 111, 139, .16) 0 2px, transparent 3px) 0 0 / 7rem 6rem,
+    radial-gradient(circle at 70% 60%, rgba(27, 184, 204, .2) 0 2px, transparent 3px) 0 0 / 6rem 7.5rem,
+    radial-gradient(circle at 45% 85%, rgba(255, 200, 61, .35) 0 2px, transparent 3px) 0 0 / 8rem 5rem,
+    var(--sand); }
+.intro .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+.intro-copy { display: grid; gap: 1.25rem; min-width: 0; justify-items: start; }
+.sign { justify-self: center; width: min(100%, 24rem); background: var(--paper); border: 0.4rem solid var(--sign-blue); border-radius: 1rem; padding: 1.75rem 1.75rem 1.5rem; transform: rotate(2.2deg); box-shadow: 0 0 0 0.35rem var(--paper), 0.7rem 0.9rem 0 rgba(11, 44, 58, .18); position: relative; color: var(--sign-blue); }
+.sign::before, .sign::after { content: ""; position: absolute; top: 0.7rem; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #E9EEF2, #8FA0AD); box-shadow: 0 1px 1px rgba(0, 0, 0, .3); }
+.sign::before { left: 0.7rem; } .sign::after { right: 0.7rem; }
+.sign h3 { font: 800 clamp(1.75rem, 4vw, 2.375rem)/1 var(--body); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; color: var(--flamingo-ink); padding-bottom: 0.9rem; border-bottom: 3px solid var(--sign-blue); margin-bottom: 1rem; }
+.sign ol { counter-reset: rule; display: grid; gap: 0.6rem; }
+.sign li { counter-increment: rule; display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); font-weight: 700; font-size: 1.125rem; line-height: 1.3; }
+.sign li::before { content: counter(rule) "."; }
+.sign p { margin-top: 1.1rem; text-align: right; font: italic 500 1rem/1.2 var(--body); }
+@media (max-width: 54rem) { .intro .wrap { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- the bar: menu card under an awning ---------- */
+.bar { background:
+    linear-gradient(rgba(255, 255, 255, .07) 2px, transparent 2px) 0 0 / 3.25rem 3.25rem,
+    linear-gradient(90deg, rgba(255, 255, 255, .07) 2px, transparent 2px) 0 0 / 3.25rem 3.25rem,
+    var(--pool-deep);
+  color: var(--paper); }
+.awning { height: 3.25rem; background: repeating-linear-gradient(90deg, var(--flamingo) 0 3rem, var(--paper) 3rem 6rem); position: relative; z-index: 1; }
+.awning::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 1.5rem;
+  background:
+    radial-gradient(circle at 1.5rem 0, var(--flamingo) 1.47rem, transparent 1.53rem) 0 0 / 6rem 1.5rem repeat-x,
+    radial-gradient(circle at 1.5rem 0, var(--paper) 1.47rem, transparent 1.53rem) 3rem 0 / 6rem 1.5rem repeat-x;
+  filter: drop-shadow(0 0.35rem 0.3rem rgba(3, 40, 54, .4)); }
+.bar .wrap { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(2.5rem, 6vw, 5rem); align-items: center; padding-block: calc(var(--section) + 1rem) var(--section); }
+.bar-copy { display: grid; gap: 1.25rem; min-width: 0; justify-items: start; }
+.bar-copy .lede { color: #D5F1F5; }
+.seg { display: inline-flex; padding: 0.3rem; gap: 0.3rem; border-radius: 999px; background: rgba(4, 40, 54, .45); border: 2px solid rgba(255, 253, 246, .5); }
+.seg button { border: 0; background: transparent; color: var(--paper); font-weight: 700; padding: 0.65rem 1.3rem; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--sun); color: var(--lagoon); }
+.card-wrap { perspective: 1600px; transform: rotate(-1.6deg); min-width: 0; }
+.flip { display: grid; transform-style: preserve-3d; transition: transform .85s cubic-bezier(.3, 1.25, .5, 1); }
+.flip[data-side="bites"] { transform: rotateY(180deg); }
+.face { grid-area: 1 / 1; -webkit-backface-visibility: hidden; backface-visibility: hidden; background: var(--paper); color: var(--lagoon); border-radius: 0.5rem; padding: clamp(1.5rem, 4vw, 2.5rem); box-shadow: 0 1.5rem 3rem -1rem rgba(3, 30, 42, .6); display: grid; gap: 1.25rem; align-content: start; position: relative; }
+.face::before { content: ""; position: absolute; inset: 0.6rem; border: 2px solid var(--flamingo); border-radius: 0.25rem; pointer-events: none; }
+.face.back { transform: rotateY(180deg); }
+.face header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-bottom: 0.9rem; border-bottom: 2px dotted rgba(11, 44, 58, .4); }
+.face header span:first-child { font-family: var(--script); font-size: 2.25rem; line-height: 1; color: var(--flamingo-ink); }
+.face header span:last-child { font-weight: 700; font-size: 1rem; }
+.items { display: grid; gap: 0.95rem; }
+.items li { display: grid; gap: 0.1rem; }
+.items h3 { font-family: var(--display); font-size: 1.3125rem; line-height: 1.15; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.items h3 em { font: 700 0.75rem/1 var(--body); font-style: normal; background: var(--palm); color: var(--lagoon); padding: 0.28rem 0.5rem; border-radius: 999px; }
+.items p { font-size: 1rem; line-height: 1.4; color: #35525E; }
+.face footer { font-size: 0.9375rem; font-style: italic; font-weight: 500; color: #35525E; }
+@media (max-width: 58rem) { .bar .wrap { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- wristbands ---------- */
+.steps-head { display: grid; gap: 1rem; margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 44rem; }
+.bands { display: grid; gap: 1.1rem; }
+.band { --c: var(--pool); display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.5rem 1.25rem; background: var(--c); color: var(--lagoon); border-radius: 0.9rem; padding: 1.1rem 4.5rem 1.1rem 1.25rem; position: relative; box-shadow: 0.3rem 0.4rem 0 rgba(11, 44, 58, .16); min-width: 0; }
+.band::before { content: ""; position: absolute; right: 3.25rem; top: 0; bottom: 0; border-left: 3px dashed rgba(11, 44, 58, .35); }
+.band::after { content: ""; position: absolute; right: 1.1rem; top: 50%; width: 1.1rem; height: 1.1rem; border-radius: 50%; transform: translateY(-50%); background: var(--paper); box-shadow: inset 0 0 0 3px rgba(11, 44, 58, .3); }
+.band b { grid-row: span 2; width: 3.25rem; height: 3.25rem; border-radius: 50%; background: var(--paper); display: grid; place-items: center; font: 400 1.75rem/1 var(--display); box-shadow: inset 0 0 0 3px var(--lagoon); }
+.band h3 { font-family: var(--display); font-size: clamp(1.3125rem, 2.4vw, 1.625rem); line-height: 1.1; align-self: end; }
+.band p { font-size: 1.0625rem; line-height: 1.4; font-weight: 500; align-self: start; }
+.band:nth-child(1) { transform: rotate(-0.8deg); }
+.band:nth-child(2) { --c: var(--flamingo); transform: rotate(0.6deg); margin-left: clamp(0rem, 4vw, 3rem); }
+.band:nth-child(3) { --c: var(--sun); transform: rotate(-0.4deg); margin-right: clamp(0rem, 4vw, 3rem); }
+.band:nth-child(4) { --c: var(--palm); transform: rotate(0.9deg); margin-left: clamp(0rem, 6vw, 5rem); }
+@media (max-width: 40rem) { .band { padding-right: 3.75rem; } .band::before { right: 2.75rem; } .band::after { right: 0.85rem; } .band b { width: 2.75rem; height: 2.75rem; font-size: 1.5rem; } }
+
+/* ---------- postcard ---------- */
+.mail { background: linear-gradient(180deg, #BDEEF2, #8FDDE6); }
+.mail-head { display: grid; gap: 1rem; margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 40rem; }
+.postcard { background: var(--paper); border-radius: 0.4rem; box-shadow: 0 2rem 4rem -1.5rem rgba(6, 70, 92, .55), 0 0 0 1px rgba(11, 44, 58, .08); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); transform: rotate(-0.7deg); }
+.pc-left { padding: clamp(1.25rem, 3.5vw, 2.5rem); display: grid; gap: 1.1rem; align-content: start; min-width: 0; }
+.pc-left h3 { font-family: var(--script); font-size: clamp(2rem, 5vw, 3rem); line-height: 1; color: var(--flamingo-ink); transform: rotate(-2deg); transform-origin: left; margin-bottom: 0.5rem; }
+.field { display: grid; gap: 0.2rem; min-width: 0; }
+.field label, .field legend { font-weight: 700; font-size: 0.9375rem; }
+.field input, .field textarea { width: 100%; background: transparent; border: 0; border-bottom: 2px solid rgba(11, 44, 58, .55); border-radius: 0; padding: 0.4rem 0.1rem; font-size: 1.125rem; font-weight: 500; min-width: 0; }
+.field input:focus-visible, .field textarea:focus-visible { outline: 0; border-bottom-color: var(--flamingo-ink); box-shadow: 0 2px 0 var(--flamingo-ink); }
+.field textarea { resize: vertical; min-height: 3.2rem; }
+.two { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 1rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 0.35rem; }
+.chips label { position: relative; cursor: pointer; }
+.chips input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; cursor: pointer; }
+.chips span { display: inline-block; padding: 0.5rem 0.9rem; border-radius: 999px; border: 2px solid var(--lagoon); font-weight: 600; font-size: 0.9375rem; background: var(--paper); }
+.chips input:checked + span { background: var(--pool); }
+.chips input:focus-visible + span { outline: 3px solid var(--lagoon); outline-offset: 2px; }
+.pc-right { padding: clamp(1.25rem, 3.5vw, 2.5rem); border-left: 2px solid rgba(11, 44, 58, .25); display: grid; gap: 1.1rem; align-content: start; min-width: 0; position: relative; }
+.stamps { display: flex; justify-content: flex-end; align-items: center; gap: 0.25rem; min-height: 6.5rem; }
+.postmark { width: 5.5rem; height: 5.5rem; border-radius: 50%; border: 2px solid rgba(11, 44, 58, .5); display: grid; place-items: center; text-align: center; font: 700 0.6875rem/1.25 var(--body); letter-spacing: 0.04em; text-transform: uppercase; color: rgba(11, 44, 58, .62); transform: rotate(-14deg) translateX(0.35rem); flex: none; }
+.stamp { width: 5rem; height: 6.25rem; flex: none; outline: 0.4rem dotted var(--paper); outline-offset: -0.2rem; background:
+    radial-gradient(circle at 50% 58%, var(--flamingo) 0 1.25rem, transparent 1.3rem),
+    linear-gradient(transparent 58%, var(--pool) 58% 70%, #4FCFE0 70% 82%, var(--pool) 82%),
+    var(--sun);
+  box-shadow: 0 2px 5px rgba(11, 44, 58, .25); transform: rotate(3deg); }
+.to { font-weight: 700; font-size: 0.9375rem; }
+.request { white-space: pre-wrap; overflow-wrap: anywhere; font-weight: 500; font-size: 1.0625rem; line-height: 1.95; min-height: 9rem;
+  background: repeating-linear-gradient(transparent 0 calc(1.95em - 2px), rgba(11, 44, 58, .22) calc(1.95em - 2px) 1.95em); }
+.send { display: grid; gap: 0.75rem; }
+.send-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.addr { font-weight: 700; user-select: all; overflow-wrap: anywhere; }
+.status { font-size: 0.9375rem; font-weight: 600; }
+@media (max-width: 54rem) {
+  .postcard { grid-template-columns: minmax(0, 1fr); transform: none; }
+  .pc-right { border-left: 0; border-top: 2px dashed rgba(11, 44, 58, .3); }
+  .stamps { position: absolute; right: 1rem; top: -3.5rem; min-height: 0; }
+  .stamp { width: 3.75rem; height: 4.7rem; } .postmark { display: none; }
+}
+@media (max-width: 26rem) { .two { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- footer ---------- */
+.foot { background: var(--lagoon); color: #CFE6EC; border-top: 0.75rem solid transparent; border-image: repeating-linear-gradient(90deg, var(--pool) 0 2rem, #4FCFE0 2rem 4rem, var(--paper) 4rem 6rem) 12; }
+.foot .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 2rem; padding-block: 1.75rem; font-size: 1rem; }
+.foot .brand { font-size: 1.875rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .float { animation: none; }
+  .flip, .btn { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="pool on-water" id="pool">
+  <canvas id="water" aria-hidden="true"></canvas>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#pool" aria-label="Poolside AZ home">Poolside <b>AZ</b></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="link" href="#rules">Pool rules</a>
+        <a class="link" href="#menu">The menu</a>
+        <a class="link" href="#steps">How it works</a>
+        <a class="btn small" href="#request">Plan your pool day</a>
+      </nav>
+    </div>
+  </header>
+  <section class="wrap hero">
+    <div class="hero-copy">
+      <h1>The resort comes to your backyard.</h1>
+      <p class="lede">Poolside AZ brings the all-inclusive to you: a menu of food and drinks, servers at the water&rsquo;s edge, and a pool party that runs like a resort.</p>
+      <a class="btn" href="#request">Plan your pool day</a>
+      <p class="hint" id="hint">Go ahead, touch the water.</p>
+    </div>
+    <div class="floats" aria-hidden="true">
+      <div class="float ring"><i></i></div>
+      <div class="float ball"><i></i></div>
+      <div class="float tray"><i><u></u><u></u><u></u><s></s></i></div>
+    </div>
+  </section>
+  <div class="coping">
+    <ul class="wrap" role="list" aria-label="Painted on the pool edge">
+      <li class="marker">3 ft</li>
+      <li class="marker">No cooking</li>
+      <li class="marker">No cooler runs</li>
+      <li class="marker">No bartending</li>
+      <li class="marker">8 ft</li>
+    </ul>
+  </div>
+</div>
+
+<main>
+  <section class="section deck intro" id="rules">
+    <div class="wrap">
+      <div class="intro-copy">
+        <h2 class="h2">An all-inclusive afternoon, delivered to your pool.</h2>
+        <p class="lede">Poolside AZ turns the backyard you already have into the resort you would have booked. We bring a menu of food and drinks and the servers to run it.</p>
+        <p class="lede">Your guests order from the water. You get to be a guest at your own party.</p>
+        <a class="btn pink" href="#request">Plan your pool day</a>
+      </div>
+      <aside class="sign" aria-label="Pool rules sign">
+        <h3>Pool rules</h3>
+        <ol>
+          <li>No cooking.</li>
+          <li>No mixing your own drinks.</li>
+          <li>No leaving the water for snacks.</li>
+          <li>No hosting duties of any kind.</li>
+          <li>Relaxing is mandatory.</li>
+        </ol>
+        <p>The Management</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bar" id="menu">
+    <div class="awning" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="bar-copy">
+        <h2 class="h2">Order like you&rsquo;re at the swim-up bar.</h2>
+        <p class="lede">Here is a sample of what your guests could be choosing from. We set the real menu with you before the party.</p>
+        <div class="seg" role="group" aria-label="Menu side">
+          <button type="button" id="seg-drinks" aria-pressed="true">Drinks</button>
+          <button type="button" id="seg-bites" aria-pressed="false">Bites</button>
+        </div>
+      </div>
+      <div class="card-wrap">
+        <div class="flip" id="flip" data-side="drinks">
+          <article class="face front" id="face-drinks">
+            <header><span>Poolside</span><span>Sample drinks</span></header>
+            <ul class="items" role="list">
+              <li><h3>Prickly pear margarita</h3><p>Tequila, lime, and Arizona prickly pear over ice.</p></li>
+              <li><h3>Frozen pi&ntilde;a colada</h3><p>Pineapple and coconut, blended cold.</p></li>
+              <li><h3>Poolside spritz</h3><p>Bubbles, orange, and a long pour of soda.</p></li>
+              <li><h3>Watermelon agua fresca <em>zero-proof</em></h3><p>Fresh watermelon, lime, and mint.</p></li>
+              <li><h3>Cucumber mint cooler <em>zero-proof</em></h3><p>Cucumber, mint, and sparkling water.</p></li>
+            </ul>
+            <footer>A sample card. Your menu is built around your party.</footer>
+          </article>
+          <article class="face back" id="face-bites">
+            <header><span>Poolside</span><span>Sample bites</span></header>
+            <ul class="items" role="list">
+              <li><h3>Street tacos</h3><p>Carne asada or chicken, onion, cilantro, and salsa.</p></li>
+              <li><h3>Smash sliders</h3><p>Griddled beef, cheese, and pickles on soft rolls.</p></li>
+              <li><h3>Chips, guacamole, and salsa</h3><p>Made fresh and kept coming.</p></li>
+              <li><h3>Shrimp ceviche cups</h3><p>Lime-cured shrimp with tomato and avocado.</p></li>
+              <li><h3>Chilled fruit skewers</h3><p>Melon, pineapple, and berries, served cold.</p></li>
+            </ul>
+            <footer>A sample card. Your menu is built around your party.</footer>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section deck" id="steps">
+    <div class="wrap">
+      <div class="steps-head">
+        <h2 class="h2">From first message to first cannonball.</h2>
+        <p class="lede">Four steps, and only the first two ask anything of you.</p>
+      </div>
+      <ol class="bands">
+        <li class="band"><b>1</b><h3>Tell us the day</h3><p>Send the date, the guest count, and what you are celebrating.</p></li>
+        <li class="band"><b>2</b><h3>Choose the menu</h3><p>Pick the food and drinks your guests will order from.</p></li>
+        <li class="band"><b>3</b><h3>We set up and serve</h3><p>Our servers arrive, take orders poolside, and bring everything out.</p></li>
+        <li class="band"><b>4</b><h3>You stay in the water</h3><p>The party runs like a resort. You are on vacation at home.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section mail" id="request">
+    <div class="wrap">
+      <div class="mail-head">
+        <h2 class="h2">Tell us about your pool day.</h2>
+        <p class="lede">Fill in the postcard and send it. We will write back to plan the rest with you.</p>
+      </div>
+      <div class="postcard">
+        <form class="pc-left" id="pc-form" novalidate>
+          <h3>Greetings from your backyard</h3>
+          <div class="field"><label for="pc-name">Your name</label><input id="pc-name" type="text" autocomplete="name"></div>
+          <div class="two">
+            <div class="field"><label for="pc-date">Party date</label><input id="pc-date" type="date"></div>
+            <div class="field"><label for="pc-guests">Guests</label><input id="pc-guests" type="number" min="1" inputmode="numeric" placeholder="25"></div>
+          </div>
+          <fieldset class="field">
+            <legend>The occasion</legend>
+            <div class="chips">
+              <label><input type="radio" name="occasion" id="oc-1" value="Birthday"><span>Birthday</span></label>
+              <label><input type="radio" name="occasion" id="oc-2" value="Bachelorette"><span>Bachelorette</span></label>
+              <label><input type="radio" name="occasion" id="oc-3" value="Family get-together"><span>Family get-together</span></label>
+              <label><input type="radio" name="occasion" id="oc-4" value="Company party"><span>Company party</span></label>
+              <label><input type="radio" name="occasion" id="oc-5" value="Just because"><span>Just because</span></label>
+            </div>
+          </fieldset>
+          <div class="field"><label for="pc-note">Anything we should know</label><textarea id="pc-note" rows="2"></textarea></div>
+        </form>
+        <div class="pc-right">
+          <div class="stamps" aria-hidden="true"><div class="postmark">Poolside AZ<br>your backyard</div><div class="stamp"></div></div>
+          <p class="to">To: Poolside AZ</p>
+          <p class="request" id="pc-request"></p>
+          <div class="send">
+            <div class="send-row">
+              <a class="btn pink" id="pc-mail" href="mailto:hello@poolsideaz.com">Email this postcard</a>
+              <button class="btn plain small" id="pc-copy" type="button">Copy the message</button>
+            </div>
+            <p>Or write to <span class="addr" id="pc-addr">hello@poolsideaz.com</span></p>
+            <p class="status" id="pc-status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="#pool" aria-label="Poolside AZ home">Poolside <b>AZ</b></a>
+    <span>The resort experience for Arizona backyards.</span>
+    <span>&copy; 2026 Poolside AZ</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- the menu card flips between drinks and bites ---- */
+  (function () {
+    var flip = document.getElementById('flip');
+    var bd = document.getElementById('seg-drinks'), bb = document.getElementById('seg-bites');
+    var fd = document.getElementById('face-drinks'), fb = document.getElementById('face-bites');
+    if (!flip || !bd || !bb) return;
+    function show(side) {
+      flip.setAttribute('data-side', side);
+      bd.setAttribute('aria-pressed', side === 'drinks' ? 'true' : 'false');
+      bb.setAttribute('aria-pressed', side === 'bites' ? 'true' : 'false');
+      fd.setAttribute('aria-hidden', side === 'drinks' ? 'false' : 'true');
+      fb.setAttribute('aria-hidden', side === 'bites' ? 'false' : 'true');
+    }
+    bd.addEventListener('click', function () { show('drinks'); });
+    bb.addEventListener('click', function () { show('bites'); });
+    show('drinks');
+  })();
+
+  /* ---- the postcard writes the request as you fill it in ---- */
+  (function () {
+    var form = document.getElementById('pc-form');
+    var out = document.getElementById('pc-request');
+    var mail = document.getElementById('pc-mail');
+    var copy = document.getElementById('pc-copy');
+    var status = document.getElementById('pc-status');
+    var addr = document.getElementById('pc-addr');
+    if (!form || !out) return;
+    var to = addr.textContent.trim();
+    var dateEl = document.getElementById('pc-date');
+    try { var d = new Date(); dateEl.min = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); } catch (e) {}
+    function niceDate(v) {
+      if (!v) return '';
+      var p = v.split('-'); var dt = new Date(+p[0], +p[1] - 1, +p[2]);
+      try { return dt.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); } catch (e) { return v; }
+    }
+    function compose() {
+      var name = document.getElementById('pc-name').value.trim();
+      var date = niceDate(dateEl.value);
+      var guests = document.getElementById('pc-guests').value.trim();
+      var oc = form.querySelector('input[name="occasion"]:checked');
+      var note = document.getElementById('pc-note').value.trim();
+      var lines = ['Hi Poolside AZ,', 'I would like to plan a pool day.'];
+      lines.push('Date: ' + (date || 'to be decided'));
+      lines.push('Guests: ' + (guests ? 'about ' + guests : 'to be decided'));
+      lines.push('Occasion: ' + (oc ? oc.value : 'to be decided'));
+      if (note) lines.push('Notes: ' + note);
+      lines.push(name ? 'Thanks, ' + name : 'Thanks!');
+      return lines.join('\n');
+    }
+    function update() {
+      var text = compose();
+      out.textContent = text;
+      mail.href = 'mailto:' + to + '?subject=' + encodeURIComponent('Pool day request') + '&body=' + encodeURIComponent(text);
+    }
+    form.addEventListener('input', update);
+    form.addEventListener('change', update);
+    form.addEventListener('submit', function (e) { e.preventDefault(); });
+    copy.addEventListener('click', function () {
+      var text = compose() + '\n\n(Send to ' + to + ')';
+      var done = function () { status.textContent = 'Copied. Paste it into an email to ' + to + '.'; };
+      var fallback = function () {
+        var r = document.createRange(); r.selectNodeContents(out);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        status.textContent = 'Message selected. Copy it and email it to ' + to + '.';
+      };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, fallback); }
+        else { fallback(); }
+      } catch (e) { fallback(); }
+    });
+    update();
+  })();
+
+  /* ---- the water: tiled pool floor under moving caustics, with ripples where you touch ---- */
+  (function () {
+    var cv = document.getElementById('water'), host = document.getElementById('pool'), hint = document.getElementById('hint');
+    if (!cv || !host) return;
+    if (reduce && hint) hint.hidden = true;
+    var gl = null;
+    try { gl = cv.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power' }) || cv.getContext('experimental-webgl'); } catch (e) {}
+    function off() { cv.hidden = true; if (hint) hint.hidden = true; }
+    if (!gl) { off(); return; }
+
+    var VS = 'attribute vec2 a; void main(){ gl_Position = vec4(a, 0.0, 1.0); }';
+    var FS = [
+      '#ifdef GL_FRAGMENT_PRECISION_HIGH', 'precision highp float;', '#else', 'precision mediump float;', '#endif',
+      'uniform vec2 uRes; uniform float uTime; uniform float uUnit; uniform vec3 uRip[8];',
+      'const float TAU = 6.28318530718;',
+      'float caustic(vec2 uv, float t){',
+      '  vec2 p = mod(uv * TAU, TAU) - 250.0; vec2 i = p; float c = 1.0; float inten = 0.005;',
+      '  for (int n = 0; n < 5; n++){',
+      '    float tt = t * (1.0 - (3.5 / float(n + 1)));',
+      '    i = p + vec2(cos(tt - i.x) + sin(tt + i.y), sin(tt - i.y) + cos(tt + i.x));',
+      '    c += 1.0 / length(vec2(p.x / (sin(i.x + tt) / inten), p.y / (cos(i.y + tt) / inten)));',
+      '  }',
+      '  c /= 5.0; c = 1.17 - pow(c, 1.4);',
+      '  return pow(abs(c), 8.0);',
+      '}',
+      'void main(){',
+      '  vec2 px = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y);',
+      '  vec2 p = px / uUnit; vec2 nrm = px / uRes;',
+      '  vec2 d = vec2(0.0); float glint = 0.0;',
+      '  for (int k = 0; k < 8; k++){',
+      '    vec3 r = uRip[k]; float age = uTime - r.z;',
+      '    if (age > 0.0 && age < 4.5){',
+      '      vec2 v = p - r.xy; float dist = length(v) + 0.0001;',
+      '      float front = age * 0.30;',
+      '      float env = exp(-pow((dist - front) / 0.07, 2.0)) * exp(-age * 1.0);',
+      '      float w = sin((dist - front) * 64.0) * env;',
+      '      d += (v / dist) * w * 0.016; glint += w;',
+      '    }',
+      '  }',
+      '  d += 0.0045 * vec2(sin(p.y * 9.0 + uTime * 0.9) + sin(p.x * 5.0 - uTime * 0.6), cos(p.x * 8.0 + uTime * 0.8) + sin(p.y * 6.0 + uTime * 0.5));',
+      '  vec2 q = p + d;',
+      '  float n = 11.0; vec2 g = fract(q * n); vec2 id = floor(q * n);',
+      '  float inside = smoothstep(0.0, 0.05, g.x) * smoothstep(1.0, 0.95, g.x) * smoothstep(0.0, 0.05, g.y) * smoothstep(1.0, 0.95, g.y);',
+      '  float rnd = fract(sin(dot(id, vec2(12.9898, 78.233))) * 43758.5453);',
+      '  vec3 shallow = vec3(0.10, 0.72, 0.80); vec3 deep = vec3(0.02, 0.37, 0.55);',
+      '  float depth = clamp(1.0 - (nrm.x * 0.62 + nrm.y * 0.30), 0.0, 1.0);',
+      '  vec3 tile = mix(shallow, deep, depth) * (0.95 + 0.09 * rnd);',
+      '  vec3 col = mix(tile * 1.16 + 0.04, tile, inside);',
+      '  float c = caustic(q * 1.35 + d * 5.0, uTime * 0.5);',
+      '  col += vec3(0.80, 1.0, 0.96) * c * (0.30 + 0.30 * (1.0 - depth));',
+      '  col += vec3(0.55, 0.62, 0.60) * glint * 0.55;',
+      '  gl_FragColor = vec4(col, 1.0);',
+      '}'
+    ].join('\n');
+
+    function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; }
+    var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) { off(); return; }
+    var prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { off(); return; }
+    gl.useProgram(prog);
+    var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(prog, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    var uRes = gl.getUniformLocation(prog, 'uRes'), uTime = gl.getUniformLocation(prog, 'uTime'), uUnit = gl.getUniformLocation(prog, 'uUnit'), uRip = gl.getUniformLocation(prog, 'uRip[0]');
+
+    var UNIT = 600, dpr = 1, rip = new Float32Array(24), next = 0, t0 = performance.now(), visible = true, raf = 0, lastMove = 0, lastAuto = 0, touched = false;
+    for (var i = 0; i < 8; i++) rip[i * 3 + 2] = -100;
+    function now() { return (performance.now() - t0) / 1000; }
+    function drop(x, y) { rip[next * 3] = x / UNIT; rip[next * 3 + 1] = y / UNIT; rip[next * 3 + 2] = now(); next = (next + 1) % 8; }
+
+    function size() {
+      var r = cv.getBoundingClientRect(); if (!r.width) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+      gl.viewport(0, 0, cv.width, cv.height);
+      if (reduce) frame();
+    }
+    function frame() {
+      var t = reduce ? 12.0 : now();
+      gl.uniform2f(uRes, cv.width, cv.height); gl.uniform1f(uTime, t); gl.uniform1f(uUnit, UNIT * dpr); gl.uniform3fv(uRip, rip);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    function loop() {
+      if (!touched && now() - lastAuto > 2.6) { var r = cv.getBoundingClientRect(); drop(r.width * (0.45 + Math.random() * 0.5), r.height * (0.15 + Math.random() * 0.6)); lastAuto = now(); }
+      frame();
+      raf = visible ? requestAnimationFrame(loop) : 0;
+    }
+    function start() { if (!raf && visible && !reduce) raf = requestAnimationFrame(loop); }
+
+    size();
+    if ('ResizeObserver' in window) { new ResizeObserver(size).observe(cv); } else { window.addEventListener('resize', size); }
+    if ('IntersectionObserver' in window) { new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); }).observe(cv); }
+    if (!reduce) {
+      host.addEventListener('pointermove', function (e) {
+        var n = performance.now(); if (n - lastMove < 110) return; lastMove = n;
+        var r = cv.getBoundingClientRect(); touched = true; drop(e.clientX - r.left, e.clientY - r.top);
+      });
+      host.addEventListener('pointerdown', function (e) {
+        var r = cv.getBoundingClientRect(); touched = true; drop(e.clientX - r.left, e.clientY - r.top);
+        if (hint) hint.textContent = 'The water is fine.';
+      });
+      host.addEventListener('pointerleave', function () { touched = false; lastAuto = now(); });
+      start();
+    } else { frame(); }
+  })();
+})();
+</script>
+</body>
+</html>
